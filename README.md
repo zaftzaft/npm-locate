@@ -35,3 +35,5 @@ $ npm-locate -k <keyword>
 
 ## TODO
 + [ ] npm publish
++ [ ] JSON を stream な感じで処理させる
++ [ ] ダウンロード数順にソートできるようにする
