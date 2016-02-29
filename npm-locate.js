@@ -147,17 +147,46 @@ const main = (options) => {
         output.keywords = keywords.split(",").join(", ");
       }
 
-      if(options.keywords){
-        let keypos = keywords.split(",").indexOf(options.keywords);
-        if(~keypos){
-          let keys = keywords.split(",");
-          keys[keypos] = chalk.green(keys[keypos]);
-          output.keywords = keys.join(", ");
+      if(options.match){
+        if(name === options.match){
+          //output.name = hi(name, options.name);
         }
         else{
           return;
         }
       }
+
+      if(options.keywords){
+        let keys = keywords.split(",");
+        let match = options.keywords.split(",").every((keyword) => {
+          let pos = keys.indexOf(keyword);
+          if(~pos){
+            keys[pos] = chalk.green(keys[pos]);
+            return true;
+          }
+          else{
+            return false;
+          }
+        });
+
+        if(!match){
+          return;
+        }
+
+        output.keywords = keys.join(", ");
+      }
+
+      //if(options.keywords){
+      //  let keypos = keywords.split(",").indexOf(options.keywords);
+      //  if(~keypos){
+      //    let keys = keywords.split(",");
+      //    keys[keypos] = chalk.green(keys[keypos]);
+      //    output.keywords = keys.join(", ");
+      //  }
+      //  else{
+      //    return;
+      //  }
+      //}
 
       if(options.description){
         if(description.includes(options.description)){
@@ -171,15 +200,6 @@ const main = (options) => {
       if(options.name){
         if(name.includes(options.name)){
           output.name = hi(name, options.name);
-        }
-        else{
-          return;
-        }
-      }
-
-      if(options.match){
-        if(name === options.match){
-          //output.name = hi(name, options.name);
         }
         else{
           return;
@@ -222,7 +242,8 @@ parser.addArgument(["-d", "--description"], {
 });
 
 parser.addArgument(["-k", "--keywords"], {
-  help: "keywords filter"
+  help: "keywords filter",
+  metavar: "keyword1,keyword2,..."
 });
 
 parser.addArgument(["--update"], {
