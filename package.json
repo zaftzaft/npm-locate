@@ -1,6 +1,6 @@
 {
   "name": "npm-locate",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "find npm package",
   "main": "npm-locate.js",
   "scripts": {
@@ -13,6 +13,9 @@
   ],
   "bin": {
     "npm-locate": "npm-locate.js"
+  },
+  "engines": {
+    "node": ">=4.0.0"
   },
   "repository": "https://github.com/zaftzaft/npm-locate",
   "dependencies": {
