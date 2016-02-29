@@ -128,6 +128,8 @@ const main = (options) => {
       return str.replace(keyword, chalk.green(keyword));
     };
 
+    let total = 0;
+
     rl.on("line", (line) => {
       const data = line.split(" |");
       const name = data[0];
@@ -176,18 +178,6 @@ const main = (options) => {
         output.keywords = keys.join(", ");
       }
 
-      //if(options.keywords){
-      //  let keypos = keywords.split(",").indexOf(options.keywords);
-      //  if(~keypos){
-      //    let keys = keywords.split(",");
-      //    keys[keypos] = chalk.green(keys[keypos]);
-      //    output.keywords = keys.join(", ");
-      //  }
-      //  else{
-      //    return;
-      //  }
-      //}
-
       if(options.description){
         if(description.includes(options.description)){
           output.description = hi(description, options.description);
@@ -206,6 +196,7 @@ const main = (options) => {
         }
       }
 
+      total++;
       console.log(chalk.gray("\u2713"), output.name);
       if(output.description){
         console.log("  ", output.description);
@@ -213,6 +204,10 @@ const main = (options) => {
       if(output.keywords){
         console.log("  ", chalk.gray("$"), output.keywords);
       }
+    });
+
+    rl.on("close", () => {
+      console.log("\n", chalk.cyan("\u276f"), "Total:", total, "packages.");
     });
 
   })
