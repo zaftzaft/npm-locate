@@ -129,6 +129,7 @@ const main = (options) => {
     };
 
     let total = 0;
+    let results = [];
 
     rl.on("line", (line) => {
       const data = line.split(" |");
@@ -197,6 +198,7 @@ const main = (options) => {
       }
 
       total++;
+      results.push(name);
       console.log(chalk.gray("\u2713"), output.name);
       if(output.description){
         console.log("  ", output.description);
@@ -208,6 +210,10 @@ const main = (options) => {
 
     rl.on("close", () => {
       console.log("\n", chalk.cyan("\u276f"), "Total:", total, "packages.");
+
+      if(options.trends && results.length <= 10){
+        console.log(`http://www.npmtrends.com/${results.join("-vs-")}`);
+      }
     });
 
   })
@@ -252,6 +258,11 @@ parser.addArgument(["--build"], {
 });
 
 parser.addArgument(["-v", "--verbose"], {
+  action: "storeTrue"
+});
+
+parser.addArgument(["--trends"], {
+  help: "Create [http://www.npmtrends.com/] query (total <= 10)",
   action: "storeTrue"
 });
 
