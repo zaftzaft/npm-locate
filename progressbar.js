@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 const byteFormat = (bytes) => {
   let kib = 1 << 10;
@@ -35,5 +35,5 @@ module.exports = (bytes, contentLength) => {
   let bar = new Array((size * percent|0) + 1).join("=");
   bar = pad(bar, size);
 
-  process.stdout.write("\r" + left + bar + right);
+  return `${left}${bar}${right}`;
 };
