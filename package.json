@@ -1,6 +1,6 @@
 {
   "name": "npm-locate",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "find npm package",
   "main": "npm-locate.js",
   "scripts": {
@@ -19,10 +19,12 @@
   },
   "repository": "https://github.com/zaftzaft/npm-locate",
   "dependencies": {
+    "JSONStream": "1.1.1",
     "argparse": "1.0.6",
     "bluebird": "3.3.1",
     "chalk": "1.1.1",
-    "got": "6.2.0"
+    "got": "6.2.0",
+    "ora": "0.2.0"
   },
   "files": [
     "npm-locate.js",

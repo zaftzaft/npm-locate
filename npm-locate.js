@@ -7,8 +7,10 @@ const path           = require("path");
 const Promise        = require("bluebird");
 const fs             = Promise.promisifyAll(require("fs"));
 const ArgumentParser = require("argparse").ArgumentParser;
+const JSONStream     = require("JSONStream");
 const got            = require("got");
 const chalk          = require("chalk");
+const ora            = require("ora");
 const progressbar    = require("./progressbar");
 
 
@@ -70,40 +72,35 @@ const download = () => {
 
 const build = (filepath) => {
   return new Promise((resolve, reject) => {
-    const writer = fs.createWriteStream(path.join(cachedir, "index.db"));
-    writer.on("finish", () => resolve(true));
-
     const esc = (s) => {
       return ((s||"")+"")
       .replace(/\|/g, "\\|")
       .replace(/\n|\r/g, "");
     };
 
-    console.log("[Build] reading ", filepath);
-    fs.readFile(filepath, "utf8", (err, data) => {
-      if(err){
-        return reject(err);
-      }
+    const spinner = ora();
+    spinner.start();
 
-      console.log("[Build] parsing JSON");
-      console.time("parseJSON");
-      const result = JSON.parse(data);
-      console.timeEnd("parseJSON");
+    const writer = fs.createWriteStream(path.join(cachedir, "index.db"));
+    writer.on("finish", () => resolve(true));
 
-      console.log("[Build] Building database");
-      console.time("buildDB");
-      Object.keys(result).forEach((key) => {
-        const pkg = result[key];
-        writer.write([
-          esc(pkg.name),
-          esc(pkg.description),
-          esc(pkg.keywords)
-        ].join(" |") + "\n");
-      });
-      console.timeEnd("buildDB");
+    const stream = JSONStream.parse("*");
 
-      writer.end();
+    stream.on("data", pkg => {
+      spinner.text = pkg.name;
+      writer.write([
+        esc(pkg.name),
+        esc(pkg.description),
+        esc(pkg.keywords)
+      ].join(" |") + "\n");
     });
+
+    stream.on("close", () => {
+      writer.end();
+      spinner.stop();
+    });
+
+    fs.createReadStream(filepath).pipe(stream);
   });
 };
 
