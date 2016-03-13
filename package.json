@@ -23,5 +23,9 @@
     "bluebird": "3.3.1",
     "chalk": "1.1.1",
     "got": "6.2.0"
-  }
+  },
+  "files": [
+    "npm-locate.js",
+    "progressbar.js"
+  ]
 }
