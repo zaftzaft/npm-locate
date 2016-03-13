@@ -33,7 +33,13 @@ $ npm-locate -k <keyword>
 
 ![screenshot](https://raw.githubusercontent.com/zaftzaft/npm-locate/master/ss/bykeyword.png)
 
++
+
+```
+$ npm-locate -N got -v
+```
+
 ## TODO
 + [ ] npm publish
-+ [ ] JSON を stream な感じで処理させる
++ [*] JSON を stream な感じで処理させる
 + [ ] ダウンロード数順にソートできるようにする
