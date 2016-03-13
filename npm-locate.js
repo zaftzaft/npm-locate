@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-"use strict";
+'use strict';
 
 const os             = require("os");
 const readline       = require("readline");
@@ -7,7 +7,7 @@ const path           = require("path");
 const Promise        = require("bluebird");
 const fs             = Promise.promisifyAll(require("fs"));
 const ArgumentParser = require("argparse").ArgumentParser;
-const request        = require("request");
+const got            = require("got");
 const chalk          = require("chalk");
 const progressbar    = require("./progressbar");
 
@@ -36,7 +36,7 @@ const download = () => {
 
     let contentLength = 1;
     const progress = () => {
-      progressbar(writer.bytesWritten, contentLength);
+      process.stdout.write(`\r${progressbar(writer.bytesWritten, contentLength)}`);
     };
 
     const indexpath = path.join(cachedir, "index.json");
@@ -53,12 +53,17 @@ const download = () => {
 
     });
 
-    request("https://registry.npmjs.org/-/all")
-    .on("response", (resp) => {
+    got.stream("https://registry.npmjs.org/-/all")
+    .on("response", resp => {
       contentLength = +resp.headers["content-length"];
+
+      resp.on("data", () => {
+        progress();
+      });
+
     })
-    .on("data", progress)
     .pipe(writer);
+
   });
 };
 
