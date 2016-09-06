@@ -1,6 +1,6 @@
 {
   "name": "npm-locate",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "find npm package",
   "main": "npm-locate.js",
   "scripts": {
