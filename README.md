@@ -41,5 +41,6 @@ $ npm-locate -N got -v
 
 ## TODO
 + [ ] npm publish
-+ [*] JSON を stream な感じで処理させる
++ [✔] JSON を stream な感じで処理させる
 + [ ] ダウンロード数順にソートできるようにする
++ [ ] 更新日時順にソート
