@@ -87,11 +87,21 @@ const build = (filepath) => {
     const stream = JSONStream.parse("*");
 
     stream.on("data", pkg => {
+      if(typeof pkg != "object"){
+        return;
+      }
+
+      let date = 0;
+      if(("time" in pkg) && pkg.time.modified){
+        date = +new Date(pkg.time.modified);
+      }
+
       spinner.text = pkg.name;
       writer.write([
         esc(pkg.name),
         esc(pkg.description),
-        esc(pkg.keywords)
+        esc(pkg.keywords),
+        date
       ].join(" |") + "\n");
     });
 
@@ -138,6 +148,7 @@ const main = (options) => {
       const name = data[0];
       const description = data[1];
       const keywords = data[2];
+      const date = data[3];
       let display = true;
 
       let output = {
@@ -150,6 +161,7 @@ const main = (options) => {
       if(options.verbose){
         output.description = description;
         output.keywords = keywords.split(",").join(", ");
+        output.date = new Date(+date);
       }
 
       if(options.match){
@@ -201,7 +213,13 @@ const main = (options) => {
 
       total++;
       results.push(name);
-      console.log(chalk.gray("\u2713"), output.name);
+
+      console.log(
+        chalk.gray("\u2713"),
+        output.name,
+        ` [ ${output.date.toLocaleDateString()} ${output.date.toLocaleTimeString()} ]`
+      );
+
       if(output.description){
         console.log("  ", output.description);
       }
