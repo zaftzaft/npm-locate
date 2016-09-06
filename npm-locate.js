@@ -148,7 +148,9 @@ const main = (options) => {
       const name = data[0];
       const description = data[1];
       const keywords = data[2];
-      const date = data[3];
+
+      const date = new Date(+data[3]);
+
       let display = true;
 
       let output = {
@@ -161,7 +163,9 @@ const main = (options) => {
       if(options.verbose){
         output.description = description;
         output.keywords = keywords.split(",").join(", ");
-        output.date = new Date(+date);
+
+        //output.date = new Date(+date);
+        output.date = ` [ ${date.toLocaleDateString()} ${date.toLocaleTimeString()} ]`;
       }
 
       if(options.match){
@@ -217,7 +221,7 @@ const main = (options) => {
       console.log(
         chalk.gray("\u2713"),
         output.name,
-        ` [ ${output.date.toLocaleDateString()} ${output.date.toLocaleTimeString()} ]`
+        output.date || ""
       );
 
       if(output.description){
