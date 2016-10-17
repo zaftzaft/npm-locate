@@ -149,8 +149,6 @@ const main = (options) => {
       const description = data[1];
       const keywords = data[2];
 
-      const date = new Date(+data[3]);
-
       let display = true;
 
       let output = {
@@ -163,9 +161,6 @@ const main = (options) => {
       if(options.verbose){
         output.description = description;
         output.keywords = keywords.split(",").join(", ");
-
-        //output.date = new Date(+date);
-        output.date = ` [ ${date.toLocaleDateString()} ${date.toLocaleTimeString()} ]`;
       }
 
       if(options.match){
@@ -218,6 +213,11 @@ const main = (options) => {
       total++;
       results.push(name);
 
+      if(options.verbose){
+        let date = new Date(+data[3]);
+        output.date = ` [ ${date.toLocaleDateString()} ${date.toLocaleTimeString()} ]`;
+      }
+
       console.log(
         chalk.gray("\u2713"),
         output.name,
@@ -251,6 +251,8 @@ const main = (options) => {
 
 
 const parser = new ArgumentParser({
+  version: "0.0.8",
+  conflictHandler:"resolve",
   description: "Locate npm package."
 });
 
