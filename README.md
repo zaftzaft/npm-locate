@@ -44,3 +44,4 @@ $ npm-locate -N got -v
 + [x] JSON を stream な感じで処理させる
 + [ ] ダウンロード数順にソートできるようにする
 + [ ] 更新日時順にソート
++ [ ] version の表示
